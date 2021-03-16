@@ -2,7 +2,7 @@ import * as THREE from 'three'
 import alphaTexture from '../../../assets/textures/stripes_gradient.jpg';
 
 export default function scene(scene) {    
-    const group = new THREE.Group();
+    //const group = new THREE.Group();
 
     /*const subjectGeometry = deformGeometry(new THREE.IcosahedronGeometry(10, 2));
     
@@ -30,7 +30,7 @@ export default function scene(scene) {
     
         cube.position.x = x;
         cube.position.y = 1.6;
-        cube.position.z = -2;
+        cube.position.z = -21;
     
         return cube;
       }
@@ -41,7 +41,7 @@ export default function scene(scene) {
     //scene.add(group);
 
 
-    group.rotation.z = Math.PI/4;
+    //group.rotation.z = Math.PI/4;
 
     const speed = 0.5;
     const textureOffsetSpeed = 0.02;

@@ -1,5 +1,6 @@
 import * as THREE from 'three';
 import SceneSubject from './SceneSubject';
+import MsgText from './MsgText';
 import GeneralLights from './GeneralLights';
 import { VRButton } from 'three/examples/jsm/webxr/VRButton';
 export default function canvas(canvas)  {
@@ -62,7 +63,8 @@ export default function canvas(canvas)  {
     function createSceneSubjects(scene) {
         const sceneSubjects = [
             new GeneralLights(scene),
-            new SceneSubject(scene)
+            new SceneSubject(scene),
+            new MsgText(scene)
         ];
 
         return sceneSubjects;
@@ -73,7 +75,7 @@ export default function canvas(canvas)  {
 
         for(let i=0; i<sceneSubjects.length; i++)
             sceneSubjects[i].update(elapsedTime);
-
+        sceneSubjects[2].textAdd("world",-5);
         //updateCameraPositionRelativeToMouse();
 
         renderer.render(scene, camera);
