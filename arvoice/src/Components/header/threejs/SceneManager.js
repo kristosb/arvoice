@@ -2,7 +2,9 @@ import * as THREE from 'three';
 import SceneSubject from './SceneSubject';
 import MsgText from './MsgText';
 import GeneralLights from './GeneralLights';
+import Speach from '../Speach';
 import { VRButton } from 'three/examples/jsm/webxr/VRButton';
+//import { VoiceButton } from './VoiceButton';
 export default function canvas(canvas)  {
 
     const clock = new THREE.Clock();
@@ -23,8 +25,11 @@ export default function canvas(canvas)  {
     const camera = buildCamera(screenDimensions);
     const sceneSubjects = createSceneSubjects(scene);
 
-    
-    
+    window.addEventListener("keypress", onKeyPress);
+    const spechToText = new Speach();
+    onSpeach();
+    msgTextAdd("press 1 and \n speak");
+
 
     function buildScene() {
         const scene = new THREE.Scene();
@@ -63,8 +68,9 @@ export default function canvas(canvas)  {
     function createSceneSubjects(scene) {
         const sceneSubjects = [
             new GeneralLights(scene),
-            new SceneSubject(scene),
-            new MsgText(scene)
+            //new SceneSubject(scene),
+            new MsgText(scene),
+            //new Speach()
         ];
 
         return sceneSubjects;
@@ -75,12 +81,37 @@ export default function canvas(canvas)  {
 
         for(let i=0; i<sceneSubjects.length; i++)
             sceneSubjects[i].update(elapsedTime);
-        sceneSubjects[2].textAdd("world",-5);
+        //sceneSubjects[2].textAdd("world");
         //updateCameraPositionRelativeToMouse();
 
         renderer.render(scene, camera);
     }
-
+    function onKeyPress(ev) {
+        let keycode = ev.which;
+        if (
+          (keycode >= 48 && keycode <= 57) ||
+          (keycode >= 97 && keycode <= 122) ||
+          (keycode >= 65 && keycode <= 90)
+        ) {
+          //this.addLetter(ev.key);
+          if(keycode == 49) {
+            //spechToText.getText();
+            spechToText.start();
+          }else{
+            msgTextAdd("key= "+ev.key);
+          }
+        }
+      }
+    function speachStart(){
+        spechToText.start();
+    }
+    //enable event, on ready send data to msgtext
+    function onSpeach(){
+        spechToText.on("ready",x=> msgTextAdd(x));     
+    }
+    function msgTextAdd(x){
+        sceneSubjects[1].textAdd(x);
+    }
     /*function updateCameraPositionRelativeToMouse() {
         camera.position.x += (  (mousePosition.x * 0.01) - camera.position.x ) * 0.01;
         camera.position.y += ( -(mousePosition.y * 0.01) - camera.position.y ) * 0.01;
@@ -110,11 +141,17 @@ export default function canvas(canvas)  {
     function vrRender(ren){
         renderer.setAnimationLoop(ren);
     }
+
+    /*/function startVoiceGet(){
+        return VoiceButton.createButton( renderer );
+    }*/
     return {
         update,
         onWindowResize,
         //onMouseMove,
         vrButtonGet,
-        vrRender
+        vrRender,
+        speachStart
+        //startVoiceGet
     }
 }

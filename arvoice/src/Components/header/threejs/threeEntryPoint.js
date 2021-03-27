@@ -9,12 +9,19 @@ export default container => {
     let canvasHalfHeight;
     
     container.appendChild(sceneManager.vrButtonGet());
+    //container.appendChild(sceneManager.startVoiceGet());
+    const elem = document.querySelector('#VRButton');//'#VoiceButton');
+    elem.addEventListener('click', () => {
+      console.log("startVoice");
+      sceneManager.speachStart();
+    });
     bindEventListeners();
     render();
     
 
+
     function createCanvas(document, container) {
-        const canvas = document.createElement('canvas');     
+        const canvas = document.createElement('canvas');    
         container.appendChild(canvas);
         
         return canvas;
