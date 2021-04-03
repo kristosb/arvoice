@@ -1,5 +1,5 @@
 import * as THREE from 'three';
-import SceneSubject from './SceneSubject';
+//import SceneSubject from './SceneSubject';
 import MsgText from './MsgText';
 import GeneralLights from './GeneralLights';
 import Speach from '../Speach';
@@ -23,13 +23,22 @@ export default function canvas(canvas)  {
     const scene = buildScene();
     const renderer = buildRender(screenDimensions);
     const camera = buildCamera(screenDimensions);
-    const sceneSubjects = createSceneSubjects(scene);
+    const sceneSubjects = createSceneSubjects(scene, camera);
+
+    /*var geometry = new THREE.BoxGeometry(1,1,1);
+    var material = new THREE.MeshBasicMaterial({color: 0xff0000});
+    var cube = new THREE.Mesh(geometry,material);
+    scene.add(cube);
+    camera.add(cube);
+    //camera.add(sceneSubjects[1]);
+    cube.position.set(0, 0, -10);*/
+    scene.add(camera);
+    //updatePositionForCamera(camera, cube);
 
     window.addEventListener("keypress", onKeyPress);
     const spechToText = new Speach();
     onSpeach();
-    msgTextAdd("press 1 and \n speak");
-
+    //msgTextAdd("press 1 and \n speak");
 
     function buildScene() {
         const scene = new THREE.Scene();
@@ -56,20 +65,20 @@ export default function canvas(canvas)  {
         const aspectRatio = width / height;
         const fieldOfView = 75;
         const nearPlane = 0.1;
-        const farPlane = 50; 
+        const farPlane = 80; 
         const camera = new THREE.PerspectiveCamera(fieldOfView, aspectRatio, nearPlane, farPlane);
 
         //camera.position.z = 40;
-        camera.position.set(0, 1.6, 0);
+        camera.position.set(0, 0, 0);
 
         return camera;
     }
 
-    function createSceneSubjects(scene) {
+    function createSceneSubjects(scene, camera) {
         const sceneSubjects = [
             new GeneralLights(scene),
+            new MsgText(scene,camera),
             //new SceneSubject(scene),
-            new MsgText(scene),
             //new Speach()
         ];
 
@@ -83,7 +92,7 @@ export default function canvas(canvas)  {
             sceneSubjects[i].update(elapsedTime);
         //sceneSubjects[2].textAdd("world");
         //updateCameraPositionRelativeToMouse();
-
+        //updatePositionForCamera(camera, cube);
         renderer.render(scene, camera);
     }
     function onKeyPress(ev) {

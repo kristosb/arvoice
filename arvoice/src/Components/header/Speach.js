@@ -15,7 +15,7 @@ export default function scene() {
     const event = new EventEmitter();
     var something = 1;
     var noteContent = '';
-    recognition.continuous = true;
+    recognition.continuous = false;
     var scrollTimeout;
     /*function getText(){
         const msg ="hello1";
@@ -43,14 +43,16 @@ export default function scene() {
         //noteContent += transcript;
         //emit("ready",transcript);
           if (scrollTimeout) clearInterval(scrollTimeout);
-          var transArray = transcript.match(/.{1,12}/g);
+          var transArray = transcript.match(/.{1,34}/g);
           transArray.reverse().map(x=>emit("ready",x));
           //scrollTimeout = setTimeout(function(){emit("ready","tmout")},5000);
           scrollTimeout = setInterval(function(){emit("ready","\n")},3000);
         }
     };
     recognition.onstart = function() { 
-        emit("ready","...");
+        //emit("ready","...");
+        var transArray = "...".match(/.{1,34}/g);
+        transArray.reverse().map(x=>emit("ready",x));
       }
       
       recognition.onspeechend = function() {
@@ -58,6 +60,13 @@ export default function scene() {
         if (scrollTimeout) clearInterval(scrollTimeout);
         //recognition.stop();
         //recognition.start();
+      }
+      /*recognition.onsoundstart = function() {
+        console.log('Some sound is being received');
+      }*/
+      recognition.onend = function() {
+        //console.log('Speech recognition service disconnected');
+        recognition.start();
       }
       
       recognition.onerror = function(event) {
