@@ -6,13 +6,16 @@ import hfont from "../../../assets/helvetiker_regular.typeface.json";
 export default function scene(scene, camera) {   
     const textGroup = new THREE.Group();
     const loader = new THREE.FontLoader();
-    var currentPositionY = 0;
     var posOffsetY = -1.4;
     const maxLines = 3;
+    //extGroup.position.set(5,2,-5);
+    function positionSet(x,y,z){
+        textGroup.position.set(x,y,z);
+    }
     function textAdd(txt){
  
         var font = loader.parse(hfont); 
-        var textGeometry = new THREE.TextGeometry( txt, { font: font, size: 1, height: 0.01, curveSegments: 20 } );
+        var textGeometry = new THREE.TextGeometry( txt, { font: font, size: 0.5, height: 0.005, curveSegments: 20 } );
         var textMaterial = new THREE.MeshBasicMaterial( { 
             color: 0xFFFFFF,
             transparent: true,
@@ -21,9 +24,9 @@ export default function scene(scene, camera) {
         } ); 
         var textMesh = new THREE.Mesh( textGeometry, textMaterial ); 
         textMesh.rotation.y = 3.14;
-        textMesh.position.z = - 5;
-        textMesh.position.y = 2;
-        textMesh.position.x = 5;
+        //textMesh.position.z = - 5;
+        //textMesh.position.y = 2;
+        //textMesh.position.x = 5;
         
         textGroup.children.map(x=>{x.geometry.translate(0,posOffsetY,0);x.material.opacity = 0.4;});
         textGroup.add(textMesh);
@@ -42,7 +45,8 @@ export default function scene(scene, camera) {
 
     return {
         update,
-        textAdd
+        textAdd,
+        positionSet
     }
 
 }

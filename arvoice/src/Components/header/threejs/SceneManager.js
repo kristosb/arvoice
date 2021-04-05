@@ -77,13 +77,16 @@ export default function canvas(canvas)  {
     function createSceneSubjects(scene, camera) {
         const sceneSubjects = [
             new GeneralLights(scene),
-            new MsgText(scene,camera),
+            //new MsgText(scene,camera)
             //new SceneSubject(scene),
-            //new Speach()
         ];
-
-        return sceneSubjects;
+        const sceneOsd= [
+            new MsgText(scene,camera),
+        ];
+        sceneOsd[0].positionSet(3,1,-8);
+        return sceneSubjects.concat(sceneOsd);
     }
+
 
     function update() {
         const elapsedTime = clock.getElapsedTime();
